@@ -17,6 +17,17 @@ phodexr/
 │  ├─ models/
 ```
 
+#### Repository Setup
+
+We will use virtual environments to help isolate all the packages and versions used by this project. The following steps walk through creating and using a virtual environment.
+
+1. Create the virutal environment by running `python3 -m venv ./venv`. This creates a new folder called venv that houses your virtual environment.
+2. Activate the virutal environment by running `source ./venv/bin/activate`. You are now inside an environment isolated from your global python installation.
+3. Install the required dependencies by running `pip install -r requirements.txt`.
+4. Allow `run.sh` to be executed by running `chmod +x run.sh`
+4. Verify installation is working by running `./run.sh --epochs 1 train_cnn`.
+5. Deactivate virtual environment by running `deactivate`.
+
 #### App Folder
 
 The app folder contains a react app boostrapped using create-react-app with the TypeScript template. This will house the code for the final deliverable.
