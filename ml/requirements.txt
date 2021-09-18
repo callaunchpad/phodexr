@@ -6,3 +6,4 @@ torchvision==0.10.0
 transformers==4.9.2
 wandb==0.12.2
 Cython==0.29.24
+pycocotools==2.0.2

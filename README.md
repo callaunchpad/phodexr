@@ -29,9 +29,9 @@ We will use virtual environments to help isolate all the packages and versions u
 6. Verify installation is working by running `./run.sh --epochs 1 train_cnn_cifar10`.
 7. Deactivate virtual environment by running `deactivate`.
 
-The following steps are to install pycocotools so we can use coco captions
+If there is a problem with pycocotools, you can try these steps. (Currently blind trusting pycocotools on pip which might cause problems)
 
-1. Verify that cython is already installed via `pip freeze | grep cython`
+1. Verify that cython is already installed via `pip freeze | grep -i cython`
 2. Install pycocotools via `pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"`
 
 #### App Folder
