@@ -11,12 +11,15 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.mode == 'train_cnn':
+    if args.mode == 'train_cnn_cifar10':
         print('[*] Training SimpleCNN On Cifar10')
-        from ml.trainer.cifar10 import train_cifar10
+        from ml.trainer.cifar10 import train_cnn_cifar10
 
         # leave the model so you can use it after training finishes
-        model = train_cifar10(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
+        model = train_cnn_cifar10(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
+    elif args.mode == 'test_distilbert_tokenizer':
+        print('[*] Testing DistilBERT Tokenizer')
+        
     elif args.mode == 'train_clip':
         print('training clip mode')
     else:
