@@ -1,4 +1,7 @@
 import argparse
+import torch
+
+torch.manual_seed(17)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='CLI for handling ML operations')
@@ -19,7 +22,9 @@ if __name__ == '__main__':
         model = train_cnn_cifar10(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
     elif args.mode == 'test_distilbert_tokenizer':
         print('[*] Testing DistilBERT Tokenizer')
-        
+        from ml.testing.distilbert_tokenizer import test_distilbert_tokenizer
+
+        test_distilbert_tokenizer(epochs=args.epochs, batch_size=args.batch_size)
     elif args.mode == 'train_clip':
         print('training clip mode')
     else:
