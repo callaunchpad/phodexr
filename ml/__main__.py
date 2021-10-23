@@ -25,7 +25,11 @@ if __name__ == '__main__':
         from ml.testing.distilbert_tokenizer import test_distilbert_tokenizer
 
         test_distilbert_tokenizer(epochs=args.epochs, batch_size=args.batch_size)
-    elif args.mode == 'train_clip':
-        print('training clip mode')
+    elif args.mode == 'train_clip_baseline':
+        print('[*] Training CLIP mode')
+        from ml.trainer.clip_mcoco_baseline import train_clip_mcoco_baseline
+
+        # leave the model so we can use it after training finishes
+        model = train_clip_mcoco_baseline(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
     else:
         print('mode not recognized')
