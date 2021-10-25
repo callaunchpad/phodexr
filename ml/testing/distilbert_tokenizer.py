@@ -15,10 +15,9 @@ def test_distilbert_tokenizer(epochs, batch_size):
             # get the inputs; data is a list of [input: image, labels: Tuple[str,...]]
             inputs, labels = data
 
-            randomized_labels = []
-            for label in labels:
-                rand_idx = random.randint(0, len(label) - 1)
-                randomized_labels.append(label[rand_idx])
+            # NOTE: labels is a list of tuples, each tuple is one set of labels
+            rand_idx = random.randint(0, len(labels) - 1)
+            randomized_labels = list(labels[rand_idx])
 
             # inputs is a dict with input_ids and attention_mask
             inputs = tokenizer(randomized_labels, padding="max_length", truncation=True)
