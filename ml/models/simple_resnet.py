@@ -86,10 +86,3 @@ class ResNet(nn.Module):
 
 def ResNet50(img_channels = 3, num_classes = 1000):
     return ResNet(ResidualBlock, [3,4,6,3], img_channels, num_classes)
-
-def test():
-    net = ResNet50()
-    x = torch.randn(2,3,224,224)
-    y = net(x).to('cuda')
-    print(y.shape)
-test()
