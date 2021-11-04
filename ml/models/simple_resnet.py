@@ -7,17 +7,17 @@ from collections import OrderedDict
 
 class ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels, identity_downsample = None, stride=1):
-        super().__init__()
+        super(ResidualBlock,self).__init__()
         self.expansion = 4 # number of channels after a residual block
-        self.conv1 = nn.conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
         self.bn1 = nn.BatchNorm2d(out_channels)
-        self.conv2 = nn.conv2d(in_channels, out_channels, kernel_size=1, stride=stride, padding=0)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=stride, padding=1)
         self.bn2 = nn.BatchNorm2d(out_channels)
-        self.conv3 = nn.Conv2d(out_channels, out_channels*self.expansion, kernel_size = 3, stride = 1, padding = 0 )
+        self.conv3 = nn.Conv2d(out_channels, out_channels*self.expansion, kernel_size = 1, stride = 1, padding = 0 )
         self.bn3 = nn.BatchNorm2d(out_channels*self.expansion)
         self.relu = nn.ReLU()
         self.identity_downsample = identity_downsample
-    def forwared(self, x):
+    def forward(self, x):
         identity = x
 
         x = self.conv1(x)
@@ -56,6 +56,8 @@ class ResNet(nn.Module):
         x = self.relu(x)
         
         x = self.maxpool(x)
+        #print(self.layer1)
+        #print(dir(self.layer1))
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
@@ -73,11 +75,11 @@ class ResNet(nn.Module):
         
         if stride != 1 or self.in_channels != out_channels * 4: # if number of channels has changed but the identity is still 1/4
             identity_downsample = nn.Sequential(nn.Conv2d(self.in_channels, out_channels*4, kernel_size=1, stride=stride), nn.BatchNorm2d(out_channels*4))
-            layers.append(residual_block(self.in_channels, out_channels, identity_downsample, stride)) # layer that changes number of channels;
-            self.in_channels = out_channels * 4 # 256
-            for i in range(num_residual_blocks - 1): # we already changed one residual block above
-                layers.append(residual_block(self.in_channels, out_channels)) #256 --> 64 --> 256
-            return nn.Sequential(*layers) # unpacks list so that pytorch knows the order of the layers
+        layers.append(residual_block(self.in_channels, out_channels, identity_downsample, stride)) # layer that changes number of channels;
+        self.in_channels = out_channels * 4 # 256
+        for i in range(num_residual_blocks - 1): # we already changed one residual block above
+            layers.append(residual_block(self.in_channels, out_channels)) #256 --> 64 --> 256
+        return nn.Sequential(*layers) # unpacks list so that pytorch knows the order of the layers
 
 
 
