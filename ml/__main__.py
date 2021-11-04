@@ -25,6 +25,11 @@ if __name__ == '__main__':
         from ml.testing.distilbert_tokenizer import test_distilbert_tokenizer
 
         test_distilbert_tokenizer(epochs=args.epochs, batch_size=args.batch_size)
+    elif args.mode == 'train_resnet_cifar10':
+        print('[*] Training RESNET on Cifar10')
+        from ml.trainer.cifar10 import train_resnet_cifar10
+
+        model = train_resnet_cifar10(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
     elif args.mode == 'train_clip_baseline':
         print('[*] Training CLIP mode')
         from ml.trainer.clip_mcoco_baseline import train_clip_mcoco_baseline
