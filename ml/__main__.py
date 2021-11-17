@@ -36,5 +36,10 @@ if __name__ == '__main__':
 
         # leave the model so we can use it after training finishes
         nlp_head, vision_head = train_clip_mcoco_baseline(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
+    elif args.mode == 'test_clip':
+        print('[*] Testing CLIP')
+        from ml.testing.test_clip import test_clip
+        
+        res = test_clip()
     else:
         print('mode not recognized')
