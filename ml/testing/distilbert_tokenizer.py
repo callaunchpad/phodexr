@@ -22,6 +22,7 @@ def test_distilbert_tokenizer(epochs, batch_size):
             # inputs is a dict with input_ids and attention_mask
             inputs = tokenizer(randomized_labels, padding="max_length", truncation=True)
             print(inputs)
+            
             break
         break
 
