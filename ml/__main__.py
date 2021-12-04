@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', metavar='epochs', type=int, default=2, help='num epochs')
     parser.add_argument('--batch_size', metavar='batch_size', default=10, type=int, help='batch size')
     parser.add_argument('--lr', metavar='lr', type=float, default=0.001, help='learning rate')
-    parser.add_argument('--debug', dest='debug', action='store_true', help='use_debug_set')
+    parser.add_argument('--debug', dest='debug', action='store_true', help='use debug set')
     parser.set_defaults(debug=False)
 
     args = parser.parse_args()

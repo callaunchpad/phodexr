@@ -30,9 +30,9 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate, debug=False):
     distilbert = DistilBertModel.from_pretrained('distilbert-base-uncased').to(device)
     vision_encoder = ResNet50(num_classes = 768).to(device)
     if debug:
-        dataset_loader = get_cococaptions_dataloader(mode='train', batch_size=batch_size)
-    else:
         dataset_loader = get_cococaptions_dataloader(mode='debug', batch_size=batch_size)
+    else:
+        dataset_loader = get_cococaptions_dataloader(mode='train', batch_size=batch_size)
 
     criterion = nn.CrossEntropyLoss()
     vision_optimizer = optim.SGD(vision_encoder.parameters(), lr=learning_rate, momentum=0.9)

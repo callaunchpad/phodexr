@@ -27,7 +27,7 @@ def get_cococaptions_dataloader(mode, batch_size, shuffle=True, transform=normal
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=shuffle, num_workers=2, collate_fn=collate_fn)
         return trainloader
     elif mode == 'debug':
-        trainset = torchvision.datasets.CocoCaptions(root='/datasets/coco/data/train2017', annFile='/home/sean.obrien/data/phodexr-data/captions_debug2017.json', transform=transform)
+        trainset = torchvision.datasets.CocoCaptions(root='/datasets/coco/data/train2017', annFile='/datasets/coco-debug/captions_debug2017.json', transform=transform)
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=shuffle, num_workers=2, collate_fn=collate_fn)
         return trainloader
     else:
