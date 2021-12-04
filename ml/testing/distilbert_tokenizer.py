@@ -8,7 +8,7 @@ random.seed(17)
 
 def test_distilbert_tokenizer(epochs, batch_size):
     tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
-    dataset_loader = get_cococaptions_dataloader(train=True, batch_size=batch_size)
+    dataset_loader = get_cococaptions_dataloader(mode='train', batch_size=batch_size)
 
     for epoch in range(epochs):  # loop over the dataset multiple times
         for i, data in enumerate(dataset_loader, 0):

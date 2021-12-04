@@ -12,13 +12,27 @@ from ml.models.simple_resnet import ResNet50
 # setup random seed
 random.seed(17)
 
-def train_clip_mcoco_baseline(epochs, batch_size, learning_rate):
+def accuracy(output, target, k=1):
+    with torch.no_grad():
+        batch_size = target.size(0)
+
+        _, pred = output.topk(k, 1, True, True)
+        pred = pred.t()
+        correct = pred.eq(target.view(1, -1).expand_as(pred))
+
+        correct_k = correct[:k].contiguous().view(-1).float().sum(0, keepdim=True)
+        return correct_k.mul_(1. / batch_size)
+
+def train_clip_mcoco_baseline(epochs, batch_size, learning_rate, debug=False):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
     distilbert = DistilBertModel.from_pretrained('distilbert-base-uncased').to(device)
     vision_encoder = ResNet50(num_classes = 768).to(device)
-    dataset_loader = get_cococaptions_dataloader(train=True, batch_size=batch_size)
+    if debug:
+        dataset_loader = get_cococaptions_dataloader(mode='train', batch_size=batch_size)
+    else:
+        dataset_loader = get_cococaptions_dataloader(mode='debug', batch_size=batch_size)
 
     criterion = nn.CrossEntropyLoss()
     vision_optimizer = optim.SGD(vision_encoder.parameters(), lr=learning_rate, momentum=0.9)
@@ -85,13 +99,31 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate):
             loss2 = criterion(torch.transpose(logits,0,1), labels)
             net_loss = (loss1 + loss2)/2
 
+            # TODO: figure out which direction is which :')
+            img_top1_acc = accuracy(logits, labels, k=1)
+            img_top5_acc = accuracy(logits, labels, k=5)
+            text_top1_acc = accuracy(logits.t(), labels, k=1)
+            text_top5_acc = accuracy(logits.t(), labels, k=5)
+
             # pass gradients backwards
             net_loss.backward()
 
             # optimize vision_encoder gradients
             vision_optimizer.step()
 
-            wandb.log({ 'epoch': epoch + 1, 'loss': net_loss})
+            # log training metrics
+            metric_dict = {
+                'epoch': epoch+1,
+                'loss': net_loss,
+                'loss_1': loss1,
+                'loss_2': loss2,
+                'img_top1_acc': img_top1_acc,
+                'img_top5_acc': img_top5_acc,
+                'text_top1_acc': text_top1_acc,
+                'text_top5_acc': text_top5_acc
+            }
+
+            wandb.log(metric_dict)
 
     print('Finished Training CLIP Baseline')
 
