@@ -23,7 +23,7 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate):
     criterion = nn.CrossEntropyLoss()
     vision_optimizer = optim.SGD(vision_encoder.parameters(), lr=learning_rate, momentum=0.9)
 
-    wandb.init(project='clip_mcoco_baseline', entity='phodexrdev')
+    wandb.init(project='normalized_clip_mcoco_baseline', entity='phodexrdev')
     config = wandb.config
     config.update({
         "num_epochs": epochs,
@@ -61,6 +61,18 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate):
             # print(text_embeddings.shape, image_embeddings.shape)
 
             image_embeddings = torch.transpose(image_embeddings, 0, 1)
+            print(image_embeddings.shape, image_embeddings.norm(dim=-1, keepdim=True).shape)
+            print(text_embeddings.shape, text_embeddings.norm(dim=-1, keepdim=True).shape)
+            #print(image_embeddings, image_embeddings.norm(dim=-1, keepdim=True))
+            #noramlize embeddings
+            image_embeddings = image_embeddings / image_embeddings.norm(dim=-1, keepdim=True)
+            # image_embeddings = image_embeddings / torch.norm(image_embeddings, dim=1)
+            text_embeddings = text_embeddings / text_embeddings.norm(dim=-1, keepdim = True)
+            # text_embeddings = text_embeddings / torch.norm(text_embeddings, dim=1)
+            print(image_embeddings.shape)
+            #print(torch.sum(image_embeddings))
+            #print(torch.sum(text_embeddings))
+
             #print(text_embeddings.shape, image_embeddings.shape)
             t_log = nn.Parameter(torch.ones(1), requires_grad = True)
             logits = torch.matmul(text_embeddings, image_embeddings) * torch.exp(t_log).to(device)
