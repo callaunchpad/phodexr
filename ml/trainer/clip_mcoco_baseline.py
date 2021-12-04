@@ -74,7 +74,6 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate, debug=False):
             image_embeddings = vision_encoder(inputs)
             # print(text_embeddings.shape, image_embeddings.shape)
 
-            image_embeddings = torch.transpose(image_embeddings, 0, 1)
             print(image_embeddings.shape, image_embeddings.norm(dim=-1, keepdim=True).shape)
             print(text_embeddings.shape, text_embeddings.norm(dim=-1, keepdim=True).shape)
             #print(image_embeddings, image_embeddings.norm(dim=-1, keepdim=True))
@@ -89,7 +88,7 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate, debug=False):
 
             #print(text_embeddings.shape, image_embeddings.shape)
             t_log = nn.Parameter(torch.ones(1), requires_grad = True)
-            logits = torch.matmul(text_embeddings, image_embeddings) * torch.exp(t_log).to(device)
+            logits = torch.matmul(text_embeddings, image_embeddings.t()) * torch.exp(t_log).to(device)
             #print(logits.shape)
 
             # cross entropy loss

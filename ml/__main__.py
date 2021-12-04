@@ -11,6 +11,8 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', metavar='epochs', type=int, default=2, help='num epochs')
     parser.add_argument('--batch_size', metavar='batch_size', default=10, type=int, help='batch size')
     parser.add_argument('--lr', metavar='lr', type=float, default=0.001, help='learning rate')
+    parser.add_argument('--debug', dest='debug', action='store_true', help='use_debug_set')
+    parser.set_defaults(debug=False)
 
     args = parser.parse_args()
 
@@ -35,7 +37,10 @@ if __name__ == '__main__':
         from ml.trainer.clip_mcoco_baseline import train_clip_mcoco_baseline
 
         # leave the model so we can use it after training finishes
-        nlp_head, vision_head = train_clip_mcoco_baseline(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr)
+        nlp_head, vision_head = train_clip_mcoco_baseline(epochs=args.epochs,
+                                                          batch_size=args.batch_size,
+                                                          learning_rate=args.lr,
+                                                          debug=args.debug)
     elif args.mode == 'test_clip':
         print('[*] Testing CLIP')
         from ml.testing.test_clip import test_clip
