@@ -24,7 +24,7 @@ def test_clip():
     distilbert.eval()
     vision_encoder.eval()
 
-    img = Image.open('./ml/images/demo_2.png').convert('RGB')
+    img = Image.open('./ml/images/demo_1.jpg').convert('RGB')
     img_norm = normalize_resize_transform(img).to(device)
     img_norm = img_norm.unsqueeze_(0)
 
@@ -36,10 +36,15 @@ def test_clip():
         
         text_embeddings = text_embeddings_full.last_hidden_state[:,0,:]
         image_embeddings = vision_encoder(img_norm)
+
+        #normalize embeddings
+        image_embeddings = image_embeddings / image_embeddings.norm(dim=-1, keepdim=True)
+        text_embeddings = text_embeddings / text_embeddings.norm(dim=-1, keepdim = True)
         
         scores = torch.matmul(text_embeddings, torch.transpose(image_embeddings, 0, 1))
         scores_softmax = F.softmax(scores.flatten())
 
+        print(list(zip(phrases, scores.tolist())))
         print(list(zip(phrases, scores_softmax.tolist())))
 
         return text_embeddings, image_embeddings

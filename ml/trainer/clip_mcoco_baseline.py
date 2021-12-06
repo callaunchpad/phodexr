@@ -124,7 +124,7 @@ def train_clip_mcoco_baseline(epochs, batch_size, learning_rate, optimizer, deca
             text_embeddings = text_embeddings_full.last_hidden_state[:,0,:]
             image_embeddings = vision_encoder(inputs)
 
-            #noramlize embeddings
+            #normalize embeddings
             image_embeddings = image_embeddings / image_embeddings.norm(dim=-1, keepdim=True)
             text_embeddings = text_embeddings / text_embeddings.norm(dim=-1, keepdim = True)
 
