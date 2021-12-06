@@ -16,12 +16,15 @@ def test_clip():
 
     tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
     distilbert = DistilBertModel.from_pretrained('distilbert-base-uncased').to(device)
-    vision_encoder = ResNet50(num_classes = 768).to(device)
+    vision_encoder = ResNet50(num_classes=768).to(device)
+
+    checkpoint = torch.load('./ml/weights/vision_adam_20ep.pt')
+    vision_encoder.load_state_dict(checkpoint)
 
     distilbert.eval()
     vision_encoder.eval()
 
-    img = Image.open('./ml/images/demo_1.jpg')
+    img = Image.open('./ml/images/demo_2.png').convert('RGB')
     img_norm = normalize_resize_transform(img).to(device)
     img_norm = img_norm.unsqueeze_(0)
 

@@ -11,6 +11,12 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', metavar='epochs', type=int, default=2, help='num epochs')
     parser.add_argument('--batch_size', metavar='batch_size', default=10, type=int, help='batch size')
     parser.add_argument('--lr', metavar='lr', type=float, default=0.001, help='learning rate')
+    parser.add_argument('--optimizer', metavar='optimizer', type=str, default='adam', help='optimizer to use for the run')
+    parser.add_argument('--decay_epoch', metavar='decay_epoch', type=int, default=5, help='num epochs until decay lr')
+    parser.add_argument('--vision_weights', metavar='vision_weights', type=str, default='', help='path to vision weights')
+    parser.add_argument('--nlp_weights', metavar='nlp_weights', type=str, default='', help='path to nlp weights')
+    parser.add_argument('--unfreeze_nlp', dest='unfreeze_nlp', action='store_true', help='unfreeze nlp weights')
+    parser.set_defaults(unfreeze_nlp=False)
     parser.add_argument('--debug', dest='debug', action='store_true', help='use debug set')
     parser.set_defaults(debug=False)
 
@@ -37,10 +43,15 @@ if __name__ == '__main__':
         from ml.trainer.clip_mcoco_baseline import train_clip_mcoco_baseline
 
         # leave the model so we can use it after training finishes
-        nlp_head, vision_head = train_clip_mcoco_baseline(epochs=args.epochs,
-                                                          batch_size=args.batch_size,
-                                                          learning_rate=args.lr,
-                                                          debug=args.debug)
+        nlp_head, vision_head, nlp_optim, vision_optim = train_clip_mcoco_baseline(epochs=args.epochs,
+                                                                                    batch_size=args.batch_size,
+                                                                                    learning_rate=args.lr,
+                                                                                    optimizer=args.optimizer,
+                                                                                    decay_epoch=args.decay_epoch,
+                                                                                    vision_weights=args.vision_weights,
+                                                                                    nlp_weights=args.nlp_weights,
+                                                                                    unfreeze_nlp=args.unfreeze_nlp,
+                                                                                    debug=args.debug)
     elif args.mode == 'test_clip':
         print('[*] Testing CLIP')
         from ml.testing.test_clip import test_clip
@@ -48,3 +59,9 @@ if __name__ == '__main__':
         res = test_clip()
     else:
         print('mode not recognized')
+
+def save_model_optim(model, optimizer, path):
+    torch.save({
+        'model': model.state_dict(),
+        'optim': optimizer.state_dict() 
+    }, path)

@@ -5,4 +5,4 @@ root="$(dirname $0)"
 
 cd "$root/../"
 
-python3 -i -m ml "$@"
+python -i -m ml "$@"
