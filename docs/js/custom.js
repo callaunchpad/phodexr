@@ -35,43 +35,59 @@ window.onload = (_event) => {
   /**
    * Demo Form
    */
-  const HOCNNDemoForm = document.getElementById("hocnn-demo");
+  const CLIPDemoForm = document.getElementById("clip-demo");
 
-  const submitHOCNNDemoForm = async (e) => {
+  const submitCLIPDemoForm = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(HOCNNDemoForm);
+    const formData = new FormData(CLIPDemoForm);
 
-    const predictions = await fetch(config.api + "hocnn/predict", {
+    const imageEmbedding = await fetch(config.api + "/api/vision", {
       method: "POST",
       body: formData,
     });
-    const parsedPredictions = await predictions.json();
-    const HOCNNResultsNode = document.getElementById("hocnn-results");
-    HOCNNResultsNode.innerHTML = "";
+    const parsedImageEmbedding = await imageEmbedding.json();
 
-    const parsedPredictionsKeys = Object.keys(parsedPredictions);
-    for (let i = 0; i < parsedPredictionsKeys.length; i++) {
-      const predictionKey = parsedPredictionsKeys[i];
-      if (predictionKey == "fasterrcnn_object") {
-        const predictionText =
-          "Faster-RCNN object: " + parsedPredictions[predictionKey];
-        HOCNNResultsNode.appendChild(createParagraph(predictionText));
-      } else {
-        const predictionText =
-          "" +
-          (i + 1) +
-          " " +
-          predictionKey +
-          " " +
-          parsedPredictions[predictionKey] +
-          "%";
-        HOCNNResultsNode.appendChild(createParagraph(predictionText));
+    const scores = [];
+
+    const dot = (arr1, arr2) => {
+      let total = 0;
+
+      for (let i = 0; i < arr1.length; i++) {
+        total += arr1[i] * arr2[i];
       }
+
+      return total;
+    };
+
+    for (let i = 1; i <= 3; i++) {
+      const textElem = document.getElementById("text" + i);
+      const textEmbedding = await fetch(
+        config.api + "/api/nlp?text=" + encodeURIComponent(textElem.value)
+      );
+      const parsedTextEmbedding = await textEmbedding.json();
+
+      scores.push({
+        score: dot(
+          parsedImageEmbedding.embedding,
+          parsedTextEmbedding.embedding
+        ),
+        caption: textElem.value,
+      });
     }
+
+    const sortedScores = scores.sort((a, b) => b.score - a.score);
+
+    const CLIPresultsNode = document.getElementById("clip-results");
+    CLIPresultsNode.innerHTML = "";
+
+    const captionPrediction = scores[0].caption;
+    const predictionText = "Most likely caption: " + captionPrediction;
+
+    CLIPresultsNode.appendChild(createParagraph(predictionText));
 
     return false;
   };
 
-  HOCNNDemoForm.addEventListener("submit", submitHOCNNDemoForm, false);
+  CLIPDemoForm.addEventListener("submit", submitCLIPDemoForm, false);
 };

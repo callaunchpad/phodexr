@@ -8,13 +8,13 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
       <!-- Site Properties -->
-      <title>Home - Interact | Launchpad</title>
+      <title>Home - Phodexr | Launchpad</title>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
       <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="css/custom.css" />
       <script src="js/custom.js"></script>
-      <link rel="shortcut icon" href="/interact/favicon.ico">
+      <link rel="shortcut icon" href="/phodexr/favicon.ico">
    </head>
    <body>
       <!-- Following Menu -->
@@ -91,9 +91,9 @@
                                  <img src="img/demo_2.png">
                               </div>
                            </div>
-                           <div class="four wide column">
+                           <div class="four wide column" style="justify-items: center;align-items: center;flex-direction: row;display: flex;">
                               <div class="ui small image">
-                                 <img src="img/demo_3.png">
+                                 <img src="img/teamphoto.jpg">
                               </div>
                            </div>
                         </div>
@@ -102,20 +102,32 @@
                </div>
                <div class="row">
                   <div class="eight wide column">
-                     <h3 class="ui header">HO-CNN</h3>
-                     <p>Baseline model based off the original paper <a href="https://github.com/ywchao/ho-rcnn">here</a> and trained from scratch.</p>
-                     <form id="hocnn-demo" class="ui form">
+                     <h3 class="ui header">Most Likely Caption</h3>
+                     <p>CLIP model based off the original paper <a href="https://openai.com/blog/clip/">here</a> and trained from scratch.</p>
+                     <form id="clip-demo" class="ui form">
                         <div class="field">
                            <label>Image to Predict</label>
                            <input type="file" name="image" required />
-                         </div>
-                         <button class="ui button" type="submit">Predict</button>
+                        </div>
+                        <div class="field">
+                           <label>Caption One</label>
+                           <input type="text" id="text1" name="text1" value="boy on a bike" required />
+                        </div>
+                        <div class="field">
+                           <label>Caption Two</label>
+                           <input type="text" id="text2" name="text2" value="team photo" required />
+                        </div>
+                        <div class="field">
+                           <label>Caption Three</label>
+                           <input type="text" id="text3" name="text3" value="flying a kite" required />
+                        </div>
+                        <button class="ui button" type="submit">Predict</button>
                      </form>
                   </div>
                   <div class="six wide right floated column">
                      <h3 class="ui header">Results</h3>
-                     <div id="hocnn-results" class="ui placeholder segment">
-                        <p>Submit an image to see the predictions!</p>
+                     <div id="clip-results" class="ui placeholder segment">
+                        <p>Submit a query to see the predictions!</p>
                      </div>
                   </div>
                </div>
@@ -131,29 +143,6 @@
                <div class="row">
                   <div class="four wide column">
                      <div class="ui circular small image">
-                        <img src="img/reina.jpg">
-                     </div>
-                     <p></p>
-                     <p>Reina Wang</p>
-                  </div>
-                  <div class="four wide column">
-                     <div class="ui circular small image">
-                        <img src="img/abhi.jpg">
-                     </div>
-                     <p></p>
-                     <p>Abhinav Ayalur</p>
-                  </div>
-                  <div class="four wide column">
-                     <div class="ui circular small image">
-                        <img src="img/richard.jpg">
-                     </div>
-                     <p></p>
-                     <p>Richard Li</p>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="four wide column">
-                     <div class="ui circular small image">
                         <img src="img/jimmy.jpg">
                      </div>
                      <p></p>
@@ -161,17 +150,33 @@
                   </div>
                   <div class="four wide column">
                      <div class="ui circular small image">
-                        <img src="img/michelle.jpg">
+                        <img src="img/sean.jpeg">
                      </div>
                      <p></p>
-                     <p>Michelle Pan</p>
+                     <p>Sean O'brien</p>
                   </div>
                   <div class="four wide column">
                      <div class="ui circular small image">
-                        <img src="img/eshaan.jpg">
+                        <img src="img/armaan.jpeg">
                      </div>
                      <p></p>
-                     <p>Eshaan Moorjani</p>
+                     <p>Armaan Goel</p>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="four wide column">
+                     <div class="ui circular small image">
+                        <img src="img/rachel.jpg">
+                     </div>
+                     <p></p>
+                     <p>Rachel Lee</p>
+                  </div>
+                  <div class="four wide column">
+                     <div class="ui circular small image">
+                        <img src="img/ryan.png">
+                     </div>
+                     <p></p>
+                     <p>Ryan Tabrizi</p>
                   </div>
                </div>
             </div>
