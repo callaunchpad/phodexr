@@ -1,5 +1,10 @@
 # phodexr
 
+### Final Deliverables
+
+Video Demo: [here](https://drive.google.com/file/d/1whr5xseTQPCTT1yItb8UvqnWCO5BQvws/view?usp=sharing)
+Final Presentation: [here](https://docs.google.com/presentation/d/1A-5rr7cmrDe08E-3AAgIQgx0ADOgTwYMO1_apfdDLDA/edit?usp=sharing)
+
 ### Project Overview
 
 Phodexr is a project that aims to enable searching through images with text. However, the search should be based solely on the content of the image and not the text context around it. To tackle this problem, phodexr uses CLIP which is a model released by OpenAI to connect two different spaces.
